@@ -16,9 +16,16 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, 3f);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        
+        if(other.tag == "Player")
+        {
+            PlayerController playerController = other.GetComponent<PlayerController>();
+
+            if(playerController != null)
+            {
+                playerController.Die();
+            }
+        }    
     }
 }
