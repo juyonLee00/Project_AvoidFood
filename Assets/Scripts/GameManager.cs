@@ -12,6 +12,12 @@ public class GameManager : MonoBehaviour
     public Text surviveTimeText;
     private bool isGameOver;
 
+    //게임오버
+    public GameObject gameOverText;
+
+    //최고기록
+    public Text recordText;
+
     void Start()
     {
         surviveTime = 0f;
@@ -33,5 +39,20 @@ public class GameManager : MonoBehaviour
             }
             
         }
+    }
+
+    public void EndGame()
+    {
+        isGameOver = true;
+        gameOverText.SetActive(true);
+
+        float bestTime = PlayerPrefs.GetFloat("BestTime");
+
+        if(surviveTime > bestTime)
+        {
+            bestTime = surviveTime;
+            PlayerPrefs.SetFloat("BestTime", bestTime);
+        }
+        recordText.text = "Best Time : " + (int)bestTime;
     }
 }
