@@ -25,5 +25,13 @@ public class GameManager : MonoBehaviour
             surviveTime += Time.deltaTime;
             surviveTimeText.text = "Time : " + (int)surviveTime;
         }
+        else
+        {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene("SampleScene");
+            }
+            
+        }
     }
 }
