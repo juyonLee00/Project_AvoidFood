@@ -9,6 +9,13 @@ public class PlayerController : MonoBehaviour
     float xInput;
     float zInput;
 
+    Animator animator;
+
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     void Start()
     {
         //게임오브젝트에서 컴포넌트를 찾아서 가져오므로 직접 할당할 필요x
@@ -18,7 +25,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PlayerMover();
-        PlayerFaster();
     }
 
     void PlayerMover()
@@ -28,11 +34,10 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveVector = new Vector3(xInput, 0f, zInput).normalized;
         transform.position += moveVector * Time.deltaTime * speed;
-    }
 
-    void PlayerFaster()
-    {
+        animator.SetBool("isRun", moveVector != Vector3.zero);
 
+        transform.LookAt(transform.position + moveVector);
     }
 
     //죽었을 경우 오브젝트 비활성화
