@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRigidbody;
     public float speed = 8f;
+    float xInput;
+    float zInput;
 
     void Start()
     {
@@ -16,18 +18,21 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PlayerMover();
+        PlayerFaster();
     }
 
     void PlayerMover()
     {
-        float xInput = Input.GetAxis("Horizontal");
-        float zInput = Input.GetAxis("Vertical");
+        xInput = Input.GetAxis("Horizontal");
+        zInput = Input.GetAxis("Vertical");
 
-        float xSpeed = xInput * speed;
-        float zSpeed = zInput * speed;
+        Vector3 moveVector = new Vector3(xInput, 0f, zInput).normalized;
+        transform.position += moveVector * Time.deltaTime * speed;
+    }
 
-        Vector3 playerVelocity = new Vector3(xSpeed, 0f, zSpeed);
-        playerRigidbody.velocity = playerVelocity;
+    void PlayerFaster()
+    {
+
     }
 
     //죽었을 경우 오브젝트 비활성화
