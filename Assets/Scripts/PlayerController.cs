@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody playerRigidbody;
+    private Rigidbody rigid;
     public float speed = 8f;
+    public float jumpPower = 6f;
     float xInput;
     float zInput;
+    bool jDown;
+
+    bool isJump;
 
     Vector3 moveVector;
 
@@ -17,7 +21,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
-        playerRigidbody = GetComponent<Rigidbody>();
+        rigid = GetComponent<Rigidbody>();
     }
 
 
@@ -26,6 +30,7 @@ public class PlayerController : MonoBehaviour
         GetInput();
         Move();
         Turn();
+        Jump();
     }
 
 
@@ -33,6 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         xInput = Input.GetAxis("Horizontal");
         zInput = Input.GetAxis("Vertical");
+        jDown = Input.GetButtonDown("Jump");
     }
 
 
@@ -50,6 +56,23 @@ public class PlayerController : MonoBehaviour
         transform.LookAt(transform.position + moveVector);
     }
 
+    void Jump()
+    {
+        if (jDown && !isJump)
+        {
+            rigid.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            isJump = true;
+            animator.SetTrigger("doJump");
+        }    
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Floor")
+        {
+            isJump = false;
+        }
+    }
 
     public void Die()
     {
